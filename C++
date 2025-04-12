@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+const int MAX_N = 200005;
+int prefix[MAX_N];
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, k;
+        cin >> n >> k;
+        string s;
+        cin >> s;
+
+        // Build prefix sum of black cells (B = 1, W = 0)
+        prefix[0] = 0;
+        for (int i = 0; i < n; ++i) {
+            prefix[i + 1] = prefix[i] + (s[i] == 'B' ? 1 : 0);
+        }
+
+        int min_recolor = k; // maximum recolor needed is k
+        for (int i = 0; i + k <= n; ++i) {
+            int black = prefix[i + k] - prefix[i];
+            int recolor = k - black;
+            min_recolor = min(min_recolor, recolor);
+        }
+
+        cout << min_recolor << '\n';
+    }
+    return 0;
+}
